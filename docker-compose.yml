@@ -1,0 +1,77 @@
+services:
+  # Your API service
+  api:
+    build: .  # Assumes your Dockerfile is in the current directory
+    ports:
+      - "3000:3000" # Maps port 3000 on the host to port 3000 in the container
+    depends_on:
+      - db  # Ensures the database container starts before the API container
+    restart: always
+    environment:
+      - NODE_ENV=production # Or development, depending on your needs
+      - DB_HOST=db # Use the service name 'db' as the hostname
+      - DB_USER=myuser
+      - DB_PASSWORD=mypassword
+      - DB_NAME=mydb
+    # If you have any volumes
+    #volumes:
+    #  - api_data:/app/data
+  # Database service (PostgreSQL)
+  db:
+    image: postgres:14-alpine # Using PostgreSQL, you can change it to MySQL
+    restart: always
+    ports:
+      - "5432:5432"  # Maps port 5432 on the host to port 5432 in the container
+    volumes:
+      - db_data:/var/lib/postgresql/data # Persists database data
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=mydb
+    #Network configuration
+networks:
+  default:
+    driver: bridge
+# Declare named volumes
+volumes:
+  db_data:
+  #api_data:
+version: '3.8'
+services:
+  # Your API service
+  api:
+    build: .  # Assumes your Dockerfile is in the current directory
+    ports:
+      - "3000:3000" # Maps port 3000 on the host to port 3000 in the container
+    depends_on:
+      - db  # Ensures the database container starts before the API container
+    restart: always
+    environment:
+      - NODE_ENV=production # Or development, depending on your needs
+      - DB_HOST=db # Use the service name 'db' as the hostname
+      - DB_USER=myuser
+      - DB_PASSWORD=mypassword
+      - DB_NAME=mydb
+    # If you have any volumes
+    #volumes:
+    #  - api_data:/app/data
+  # Database service (PostgreSQL)
+  db:
+    image: postgres:14-alpine # Using PostgreSQL, you can change it to MySQL
+    restart: always
+    ports:
+      - "5432:5432"  # Maps port 5432 on the host to port 5432 in the container
+    volumes:
+      - db_data:/var/lib/postgresql/data # Persists database data
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=mydb
+    #Network configuration
+networks:
+  default:
+    driver: bridge
+# Declare named volumes
+volumes:
+  db_data:
+  #api_data:
